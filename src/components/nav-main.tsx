@@ -11,7 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar"
+import { env } from "@/schemas/env-schema"
 import { type LucideIcon } from "lucide-react"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 export function NavMain({
@@ -43,15 +45,18 @@ export function NavMain({
                   isActive={isActive}
                   tooltip={item.title}
                   className="relative group/button"
+                  asChild
                 >
-                  <div className="flex items-center gap-x-3 w-full ">
-                    {item.icon && (
-                      <item.icon className="size-5 shrink-0 transition-all" />
-                    )}
-                    <span className="text-base font-medium truncate transition-opacity duration-300">
-                      {item.title}
-                    </span>
-                  </div>
+                  <Link href={`http://localhost:3000/${item.url}`}>
+                    <div className="flex items-center gap-x-3 w-full ">
+                      {item.icon && (
+                        <item.icon className="size-5 shrink-0 transition-all" />
+                      )}
+                      <span className="text-base font-medium truncate transition-opacity duration-300">
+                        {item.title}
+                      </span>
+                    </div>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </Collapsible>

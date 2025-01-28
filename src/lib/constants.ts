@@ -1,8 +1,9 @@
-import { Briefcase, CoinsIcon, CreditCard, Library } from 'lucide-react'
+import { Briefcase, CoinsIcon, CreditCard, Filter, Library } from 'lucide-react'
 
 
 export const navItems = [
   { title: "Jobs", icon: Briefcase, url: "/jobs" },
+  { title: "Filters", icon: Filter, url: "/filters" },
   {
     title: "Prompt library", icon: Library, url: "/prompts",
   },

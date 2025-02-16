@@ -16,7 +16,7 @@ export function ReferralCard() {
   }
 
   return (
-    <Card className="relative overflow-hidden h-full group max-w-xl">
+    <Card className="relative shadow-none overflow-hidden h-full group w-[450px]">
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />

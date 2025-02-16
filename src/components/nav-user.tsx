@@ -30,8 +30,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
-// import { useTransition } from "react"
-// import { signOutAction } from "@/actions/signout-action"
+import { useTransition } from "react"
+import { signOutAction } from "@/actions/auth/signout-action"
 
 export function NavUser({
   user,
@@ -43,15 +43,15 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  // const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition()
 
 
   async function handleSignOut() {
-    // startTransition(() => {
-    //   signOutAction().then(() => { }).catch((error) => {
-    //     console.error(error)
-    //   })
-    // })
+    startTransition(() => {
+      signOutAction().then(() => { }).catch((error) => {
+        console.error(error)
+      })
+    })
   }
 
   return (
@@ -116,7 +116,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem> */}
-            <Button variant={"outline"} onClick={handleSignOut} className="w-full" disabled={false}>
+            <Button variant={"outline"} onClick={handleSignOut} className="w-full" disabled={isPending}>
               <LogOut />
               Log out
             </Button>

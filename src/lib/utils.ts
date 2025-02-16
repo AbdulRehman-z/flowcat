@@ -200,4 +200,3 @@ export function getFilterTags(filters: FilterState): string[] {
 
   return tags
 }
-

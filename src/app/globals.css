@@ -94,3 +94,10 @@ body {
         @apply pt-12 pb-4 px-16 overflow-hidden;
     }
 }
+
+@layer utilities {
+    .accordion-shine {
+        --mouse-x: 50%;
+        --mouse-y: 50%;
+    }
+}

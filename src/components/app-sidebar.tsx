@@ -6,12 +6,12 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { navItems } from "@/lib/constants";
 import { Logo } from "./logo";
-import { Separator } from "./ui/separator";
 import { NavUser } from "./nav-user";
+import { Separator } from "./ui/separator";
 // import UserAvaliableCreditsBadge from "./user-avaliable-credits-badge";
 import { ComponentProps } from "react";
 
@@ -25,7 +25,8 @@ type AppSidebarProps = ComponentProps<typeof Sidebar> & {
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar className="bg-background h-[95%] my-auto" variant="floating" collapsible="icon" {...props}>
+      <SidebarTrigger className="absolute -right-6 top-3 h-6 w-6 rounded-full border bg-background shadow-sm" />
       <SidebarHeader>
         <Logo />
         <Separator />
@@ -37,7 +38,6 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   );
 }

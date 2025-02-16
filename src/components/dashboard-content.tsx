@@ -1,6 +1,5 @@
 import { ModeToggle } from "@/components/toggle-theme"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@radix-ui/react-separator"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 export function DashboardLayoutContent({
   children,
@@ -14,14 +13,17 @@ export function DashboardLayoutContent({
     <SidebarProvider>
       {sidebar}
       <SidebarInset>
-        <header className="flex h-16 shrink-0 justify-between px-5 items-center gap-2 transition-[width,height] border-b-2 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-5 " />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-          </div>
+        <header className="flex shrink-0 py-7  justify-between  px-10 items-center gap-2 border-b">
+          <h1 className="text-4xl font-bold tracking-tight">
+            <span
+              className="bg-gradient-to-r from-primary to-primary/45 bg-clip-text text-transparent"
+            >
+              Good morning, Abdul!
+            </span>
+          </h1>
           <ModeToggle />
         </header>
-        <Separator />
+        {/* <Separator /> */}
         <main className="flex flex-1">{children}</main>
       </SidebarInset>
     </SidebarProvider>

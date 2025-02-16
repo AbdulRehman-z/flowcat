@@ -12,7 +12,7 @@ export function Logo() {
           </div>
           <div className="grid flex-1 text-left text-lg leading-tight">
             <span className="truncate font-semibold ">
-              Acme Inc
+              Flowcat Inc
             </span>
           </div>
         </div>

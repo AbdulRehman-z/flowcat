@@ -2,7 +2,11 @@ import { neon, neonConfig } from '@neondatabase/serverless';
 import { drizzle as DrizzleHttp } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
-import * as userfinance from './schemas/user-finance-schema';
+import * as finance from './schemas/user-finance-schema';
+import * as prompts from './schemas/user-prompt-schema';
+import * as jobsData from './schemas/user-data-schema';
+
+
 import ws from 'ws';
 import { env } from '@/schemas/env-schema';
 
@@ -11,7 +15,10 @@ let connectionString = env.AUTH_DRIZZLE_URL;
 // Combine all schemas into a single object
 const schema = {
   ...auth,
-  ...userfinance
+  ...finance,
+  ...prompts,
+  ...jobsData,
+
   // ...spread other schemas here
 };
 
@@ -50,6 +57,8 @@ export { auth };
 export const {
   accounts,
   users,
+  userJobData,
+  userPrompts,
   userBalances,
   passwordResetTokens,
   twoFactorConfirmations,

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-// import { Toaster } from "sonner";
-// import { ToastProvider } from "@/components/ui/toast";
+import { Toaster as SonnerToaster } from "sonner";
 import { Toaster } from "@/components/ui/toaster"
-
 
 
 const geistSans = localFont({
@@ -37,7 +35,7 @@ export default function RootLayout({
       >
         {children}
         <Toaster />
-        {/* <Toaster richColors theme="system" /> */}
+        <SonnerToaster richColors theme="system" />
       </body>
     </html>
   );

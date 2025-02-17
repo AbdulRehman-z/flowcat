@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useGetCredits } from "@/hooks/credits/use-get-credits"
 import { AlertCircle, ArrowRight, Sparkles } from "lucide-react"
+import { init } from "next/dist/compiled/webpack/webpack"
 
 type CreditsData = {
   credits: number | undefined
@@ -30,8 +31,12 @@ function getUsedCreditsMessage(data: CreditsData | undefined): string {
   return `${used} credits used`
 }
 
-export default function AvailableCreditsCard() {
-  const { data, isLoadingCredits } = useGetCredits()
+type AvailableCreditsCardProps = {
+  initialData: CreditsData
+}
+
+export default function AvailableCreditsCard({ initialData }: AvailableCreditsCardProps) {
+  const { data, isLoadingCredits } = useGetCredits(initialData)
   const hasValidData = data?.credits !== undefined && data?.creditsHanded !== undefined
   const percentage = calculatePercentage(data?.credits, data?.creditsHanded)
   const isOutOfCredits = hasValidData && data.credits <= 0

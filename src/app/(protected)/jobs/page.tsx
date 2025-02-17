@@ -1,20 +1,19 @@
+import { GetAvailableCredits } from "@/actions/credits/get-credits-action";
 import AvailableCreditsCard from "@/components/jobs/credits-card";
-// import { AvaliableCreditsCard } from "@/components/jobs/credits-card";
 import JobsCard from "@/components/jobs/jobs-card";
-import JobsSkeleton from "@/components/jobs/jobs-skeleton";
 import JobsStatus from "@/components/jobs/jobs-status";
 import { ReferralCard } from "@/components/jobs/referal-card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, TrendingUp } from "lucide-react";
-import { Suspense } from "react";
+
 
 export default async function Page() {
   // const initialData = await ScrapeJobsAction();
-
+  const initialCreditsData = await GetAvailableCredits()
   return (
     <div className="h-full w-full bg-background">
-      <div className="container px-10 pt-5 pb-2">
+      <div className="container min-w-full  px-10 pt-5 pb-2">
         {/* Tabs */}
         <div className="mb-6 opacity-100">
           <div className="container mx-auto px-4">
@@ -39,7 +38,7 @@ export default async function Page() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid  grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Jobs Section */}
           <div className="lg:col-span-2">
             <JobsStatus />
@@ -53,7 +52,7 @@ export default async function Page() {
             {/* Credits Section */}
             <div className="rounded-xl border flex bg-card p-6">
               <h2 className="text-lg font-semibold">Available Credits</h2>
-              <AvailableCreditsCard />
+              <AvailableCreditsCard initialData={initialCreditsData} />
             </div>
 
             {/* Referrals Section */}

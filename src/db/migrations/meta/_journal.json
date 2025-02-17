@@ -8,6 +8,13 @@
       "when": 1739709383396,
       "tag": "0000_perfect_william_stryker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1739809741449,
+      "tag": "0001_shiny_shard",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,6 @@
 "use server";
 
 import { signIn } from "@/auth";
-// import { get2FAConfirmationByUserId } from "@/data/two-factor-cofirmation";
-// import { get2FATokenByEmail } from "@/data/two-factor-token";
-// import { getUserByEmail } from "@/data/user";
 import { db } from "@/db";
 import { twoFactorConfirmations, twoFactorTokens } from "@/db/schemas/auth-schema";
 import { send2FAToken, sendVerificationMail } from "@/lib/mail";
@@ -12,7 +9,6 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-// import { loginSchema } from "../schemas/auth-schema";
 import { redirect } from "next/navigation";
 import { loginSchema } from "@/schemas/auth-schema";
 import { getUserByEmail } from "@/data/auth/user";
@@ -28,7 +24,7 @@ export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
   const { email, password, code } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
   if (!existingUser || !existingUser.password || !existingUser.email) {
-    return { error: "Email does not exist" };
+    return { error: "Email has not yet registered! Please sign up!" };
   }
 
   // check if the user is verified, if not, send veerification mail

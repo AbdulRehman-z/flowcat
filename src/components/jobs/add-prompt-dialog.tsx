@@ -17,7 +17,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "../ui/input"
 
 export function AddPromptDialog() {
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
   const [tagInput, setTagInput] = useState("")
   const form = useForm<CreateNewPromptSchemaType>({
     resolver: zodResolver(createNewPromptSchema),

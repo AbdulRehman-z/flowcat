@@ -1,47 +1,51 @@
 "use client"
 
-import { BeatLoader } from "react-spinners"
-import { useCallback, useEffect, useState } from "react";
-import CardWrapper from "./card-wrapper";
+import { newVerification } from "@/actions/auth/verification-action";
 import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { newVerification } from "@/actions/auth/verification-action";
+import CardWrapper from "./card-wrapper";
 
 export default function VerificationForm() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
 
+  console.log({ error, success })
 
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
+    console.log("onSubmit")
 
     if (!token) {
       setError("Token missing!")
       return
     }
 
-    newVerification(token).then((data) => {
+    await newVerification(token).then((data) => {
       if (data.error) {
-        setError(error)
+        setError(data.error)
       } else {
+        localStorage.setItem("verified", 'true')
         setSuccess(data.success!)
       }
     }).catch(() => {
       setError("Something went wrong!")
     })
-  }, [token, error])
+  }, [token]);
+
 
   useEffect(() => {
     onSubmit()
-
+    console.log("useEffect")
   }, [onSubmit])
 
 
   return (
-    <CardWrapper headerLabel="Confirming your verification" titleFooter="login" backButtonHref="/auth/login" backButtonLabel="Back to login">
+    <CardWrapper headerLabel="Confirming your verification" >
       <div className="flex justify-center flex-col items-center">
         {!success && !error &&
           <BeatLoader />

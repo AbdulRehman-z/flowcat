@@ -1,5 +1,7 @@
 "use client";
 
+import { loginAction } from "@/actions/auth/login-action";
+import { UserVerification } from "@/hooks/auth/use-user-verification";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -8,6 +10,9 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginSchema } from "../../schemas/auth-schema";
+import FormError from "../form-error";
+import FormSuccess from "../form-success";
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -20,10 +25,6 @@ import {
 import { Input } from "../ui/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import CardWrapper from "./card-wrapper";
-import { loginAction } from "@/actions/auth/login-action";
-import { Button } from "../ui/button";
-import FormError from "../form-error";
-import FormSuccess from "../form-success";
 
 export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
@@ -78,6 +79,10 @@ export default function LoginForm() {
         });
     });
   }
+
+  // if (true) {
+  //   navigate("/dashboard");
+  // }
 
   return (
     <CardWrapper

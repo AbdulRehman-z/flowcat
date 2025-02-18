@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 type BackButtonProps = {
   href: string;
@@ -11,15 +12,19 @@ export default function BackButton({
   label,
   titleFooter,
 }: BackButtonProps) {
+  const shouldShowBackButton = href || label || titleFooter;
+
   return (
-    <div className="text-sm text-muted-foreground text-center">
-      {label}{" "}
-      <Link
-        href={href}
-        className="underline underline-offset-4 hover:text-primary font-semibold"
-      >
-        {titleFooter}
-      </Link>
-    </div>
+    shouldShowBackButton ? (
+      <Button variant={"link"} className="mx-auto" asChild>
+        <Link
+          href={href}
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          {label}{" "}
+          {titleFooter}
+        </Link>
+      </Button>
+    ) : null
   );
 }

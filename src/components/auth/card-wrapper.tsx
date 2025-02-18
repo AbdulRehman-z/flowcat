@@ -6,8 +6,8 @@ import Socail from "./social";
 type CardWrapperProps = {
   children: React.ReactNode;
   headerLabel: string;
-  backButtonLabel: string;
-  backButtonHref: string;
+  backButtonLabel?: string;
+  backButtonHref?: string;
   showSocial?: boolean;
   titleFooter?: string;
   titleHeader?: string;
@@ -39,8 +39,8 @@ export default function CardWrapper({
         <CardFooter className="flex justify-center w-full py-6">
           <BackButton
             titleFooter={titleFooter}
-            href={backButtonHref}
-            label={backButtonLabel}
+            href={backButtonHref!}
+            label={backButtonLabel!}
           />
         </CardFooter>
       </div >

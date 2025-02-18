@@ -9,15 +9,18 @@ import { signupSchema } from "../../schemas/auth-schema";
 import { Input } from "../ui/input";
 import CardWrapper from "./card-wrapper";
 
-import { useState, useTransition } from "react";
-import { Button } from "../ui/button";
 import { signupAction } from "@/actions/auth/signup-action";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "../ui/form";
+import { useEffect, useState, useTransition } from "react";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
+import { Button } from "../ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { useUserVerification as Use } from "@/hooks/auth/use-user-verification";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter()
   const [formStatus, setFormStatus] = useState<{
     error?: string;
     success?: string;
@@ -31,6 +34,23 @@ export default function SignupForm() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        console.log("Tab is visible");
+        const isVerified = localStorage.getItem("verified") === "true";
+        if (isVerified) {
+          router.push("/auth/login");
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [router]);
 
   async function onSubmit(data: z.infer<typeof signupSchema>) {
     setFormStatus({}); // Clear previous status

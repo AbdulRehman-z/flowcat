@@ -6,6 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "db": "drizzle-kit generate && drizzle-kit migrate",
+    "db:up": "drizzle-kit up",
+    "db:reset": "bun ./src/db/reset.ts",
+    "db:push": "drizzle-kit push",
     "start": "next start",
     "lint": "next lint"
   },

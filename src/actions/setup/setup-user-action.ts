@@ -19,7 +19,7 @@ export const setupUserAction = async () => {
   }).from(userBalances).where(and(eq(userBalances.userId, userId), eq(userBalances.isTrialCreditsAccquired, false)))
 
 
-  if (result) {
+  if (!result) {
     await db.insert(userBalances).values({
       userId,
       credits: 100,

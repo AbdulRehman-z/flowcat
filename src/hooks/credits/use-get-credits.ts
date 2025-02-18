@@ -2,9 +2,10 @@ import { GetAvailableCredits } from "@/actions/credits/get-credits-action";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetCredits = (initialData: any) => {
-  const { data, isPending: isLoadingCredits, isRefetching: isRefetchingCredits } = useQuery({
+  const { data, isPending: isLoadingCredits, isRefetching: isRefetchingCredits, isError } = useQuery({
     queryKey: ['credits'],
     queryFn: GetAvailableCredits,
+
     initialData,
     refetchInterval: 1000 * 30, // 30 seconds
   })
@@ -13,5 +14,6 @@ export const useGetCredits = (initialData: any) => {
     data,
     isLoadingCredits,
     isRefetchingCredits,
+    isError,
   };
 }

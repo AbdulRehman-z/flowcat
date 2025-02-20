@@ -10,14 +10,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { createNewPromptSchema, CreateNewPromptSchemaType } from "@/schemas/prompts-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { GalleryVerticalEnd, RotateCcw, Save, X } from "lucide-react"
+import { GalleryVerticalEnd, Plus, RotateCcw, Save, X } from "lucide-react"
 import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
+import { useAddPrompt } from "@/hooks/prompts/use-add-prompt"
 
 export function AddPromptDialog() {
-  // const [open, setOpen] = useState(false)
+  const { addPrompt, isAdding } = useAddPrompt()
   const [tagInput, setTagInput] = useState("")
   const form = useForm<CreateNewPromptSchemaType>({
     resolver: zodResolver(createNewPromptSchema),
@@ -26,13 +27,12 @@ export function AddPromptDialog() {
       prompt: "",
       tags: [],
       visibility: "Private",
-      defaultPrompt: false,
+      isDefault: true,
       category: ""
     }
   })
 
   const selectedTags = form.watch("tags")
-
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault()
@@ -49,20 +49,17 @@ export function AddPromptDialog() {
   }
 
   const onSubmit = useCallback((data: CreateNewPromptSchemaType) => {
-    console.log({ data })
-  }, [])
+    addPrompt(data)
 
-  const handleReset = () => {
-    form.reset()
-    form.setValue("tags", [])
-    setTagInput("")
-  }
+  }, [addPrompt])
+
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => form.reset()}>
       <DialogTrigger asChild>
-
-        <Button variant="outline">Add new prompt</Button>
+        <Button variant="outline">
+          <Plus size={20} />
+          Add new prompt</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className="flex flex-row items-center gap-2 border-b pb-4">
@@ -72,9 +69,10 @@ export function AddPromptDialog() {
           <DialogTitle>Create New Prompt</DialogTitle>
         </DialogHeader>
         <div className="space-y-6 pt-4">
-          <Form {...form}>
+          <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
+                disabled={isAdding}
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -95,6 +93,7 @@ export function AddPromptDialog() {
               />
 
               <FormField
+                disabled={isAdding}
                 control={form.control}
                 name="prompt"
                 render={({ field }) => (
@@ -119,6 +118,7 @@ export function AddPromptDialog() {
               />
 
               <FormField
+                disabled={isAdding}
                 control={form.control}
                 name="category"
                 render={({ field }) => (
@@ -146,9 +146,10 @@ export function AddPromptDialog() {
               />
 
               <FormField
+                disabled={isAdding}
                 control={form.control}
                 name="tags"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Tags</FormLabel>
                     <div className="space-y-2">
@@ -184,6 +185,7 @@ export function AddPromptDialog() {
               />
 
               <FormField
+                disabled={isAdding}
                 control={form.control}
                 name="visibility"
                 render={({ field }) => (
@@ -211,8 +213,9 @@ export function AddPromptDialog() {
               />
 
               <FormField
+                disabled={isAdding}
                 control={form.control}
-                name="defaultPrompt"
+                name="isDefault"
                 render={({ field }) => (
                   <FormItem className="flex items-center space-x-2">
                     <FormControl>
@@ -229,17 +232,22 @@ export function AddPromptDialog() {
 
               <div className="flex items-center justify-end gap-2 border-t pt-4">
                 <Button
+                  disabled={isAdding}
                   type="button"
                   variant="outline"
                   className="gap-2"
-                  onClick={handleReset}
+                  onClick={() => { form.reset() }}
                 >
                   <RotateCcw className="h-4 w-4" />
                   Reset
                 </Button>
-                <Button type="submit" className="gap-2">
+                <Button
+                  disabled={isAdding}
+                  type="submit"
+                  className="gap-2"
+                >
                   <Save className="h-4 w-4" />
-                  Save
+                  {isAdding ? 'Adding...' : 'Add'}
                 </Button>
               </div>
             </form>

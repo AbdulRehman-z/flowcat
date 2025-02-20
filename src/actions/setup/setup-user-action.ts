@@ -1,7 +1,8 @@
 "use server"
 
 import { auth } from "@/auth"
-import { db, userBalances } from "@/db";
+import { db, userBalances, userData } from "@/db";
+import { } from "@/db/schemas/user-data-schema";
 import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
@@ -20,12 +21,18 @@ export const setupUserAction = async () => {
 
 
   if (!result) {
-    await db.insert(userBalances).values({
-      userId,
-      credits: 100,
-      creditsHanded: 100,
-      isTrialCreditsAccquired: true,
-    });
+    await db.batch([
+      db.insert(userBalances).values({
+        userId,
+        credits: 100,
+        creditsHanded: 100,
+        isTrialCreditsAccquired: true,
+      }),
+      db.insert(userData).values({
+        userId,
+        defaultPrompt: "",
+      })
+    ])
   }
 
   redirect("/jobs")

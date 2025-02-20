@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useGetCredits } from "@/hooks/credits/use-get-credits"
 import { AlertCircle, ArrowRight, Sparkles } from "lucide-react"
-import { init } from "next/dist/compiled/webpack/webpack"
 
 type CreditsData = {
   credits: number | undefined

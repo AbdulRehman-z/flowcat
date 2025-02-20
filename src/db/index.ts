@@ -57,7 +57,7 @@ export { auth };
 export const {
   accounts,
   users,
-  userJobData,
+  userData,
   userPrompts,
   userBalances,
   passwordResetTokens,

@@ -1,7 +1,9 @@
-import { pgTable, text, jsonb } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, text } from "drizzle-orm/pg-core";
 
-export const userJobData = pgTable("userData", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()).notNull(),
-  appliedJobs: jsonb("appliedJobs").array().default([]).notNull(),
-  savedJobs: jsonb("savedJobs").array().default([]).notNull(),
+export const userData = pgTable("userData", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId").notNull(),
+  defaultPrompt: text("defaultPrompt").notNull(),
+  appliedJobs: jsonb("appliedJobs").array().default([]),
+  savedJobs: jsonb("savedJobs").array().default([]),
 })

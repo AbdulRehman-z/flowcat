@@ -11,7 +11,7 @@ export const createNewPromptSchema = z.object({
   }),
   visibility: z.string(),
   tags: z.string().array(),
-  defaultPrompt: z.boolean(),
+  isDefault: z.boolean(),
   category: z.string()
 })
 

@@ -26,7 +26,7 @@ type PromptDetailsProps = {
   promptId: string
 }
 
-const PromptDetailsSkeleton = () => {
+const PromptDetailsLoadingSkeleton = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex flex-col items-center space-y-4">
@@ -72,7 +72,7 @@ export function PromptDetails({ promptId }: PromptDetailsProps) {
   // }
 
   if (isFetchingPromptData) {
-    return <PromptDetailsSkeleton />
+    return <PromptDetailsLoadingSkeleton />
   }
 
   if (!promptData) return null

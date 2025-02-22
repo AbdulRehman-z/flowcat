@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { db, userPrompts } from "@/db";
+import { db, prompts } from "@/db";
 import { NeonDbError } from "@neondatabase/serverless";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -16,10 +16,10 @@ export const DeletePromptAction = async (promptId: string) => {
     const userId = session.user.id;
 
     await db
-      .delete(userPrompts)
+      .delete(prompts)
       .where(and(
-        eq(userPrompts.id, promptId),
-        eq(userPrompts.userId, userId)
+        eq(prompts.id, promptId),
+        eq(prompts.userId, userId)
       ));
 
     revalidatePath("/prompts");

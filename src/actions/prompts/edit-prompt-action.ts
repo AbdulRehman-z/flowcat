@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth";
-import { db, userPrompts } from "@/db";
+import { db, prompts } from "@/db";
 import { createNewPromptSchema, CreateNewPromptSchemaType } from "@/schemas/prompts-schema";
 import { NeonDbError } from "@neondatabase/serverless";
 import { and, eq } from "drizzle-orm";
@@ -25,10 +25,10 @@ export const EditPromptAction = async (promptId: string, data: Partial<CreateNew
     // Verify prompt exists and belongs to user
     const existingPrompt = await db
       .select()
-      .from(userPrompts)
+      .from(prompts)
       .where(and(
-        eq(userPrompts.id, promptId),
-        eq(userPrompts.userId, userId)
+        eq(prompts.id, promptId),
+        eq(prompts.userId, userId)
       ));
 
     if (!existingPrompt[0]) {
@@ -37,7 +37,7 @@ export const EditPromptAction = async (promptId: string, data: Partial<CreateNew
 
     // Update the prompt
     await db
-      .update(userPrompts)
+      .update(prompts)
       .set({
         name,
         category,
@@ -48,8 +48,8 @@ export const EditPromptAction = async (promptId: string, data: Partial<CreateNew
         updatedAt: new Date()
       })
       .where(and(
-        eq(userPrompts.id, promptId),
-        eq(userPrompts.userId, userId)
+        eq(prompts.id, promptId),
+        eq(prompts.userId, userId)
       ));
 
     revalidatePath("/prompts");

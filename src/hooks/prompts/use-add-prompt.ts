@@ -10,6 +10,8 @@ export const useAddPrompt = () => {
     mutationFn: AddPromptAction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prompts"] });
+      queryClient.invalidateQueries({ queryKey: ["community-prompts"] });
+
       toast.success("Prompt added successfully")
 
     },

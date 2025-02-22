@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
-import { db, userPrompts } from "@/db"
+import { db, prompts } from "@/db"
 import { eq } from "drizzle-orm"
 
 export const GetPromptAction = async (promptId: string) => {
@@ -14,15 +14,15 @@ export const GetPromptAction = async (promptId: string) => {
     console.log({ promptId })
 
     const prompt = await db.select({
-      name: userPrompts.name,
-      isDefault: userPrompts.isDefault,
-      createdAt: userPrompts.createdAt,
-      prompt: userPrompts.prompt,
-      hearts: userPrompts.hearts,
-      category: userPrompts.category,
-      tags: userPrompts.tags,
-      visibility: userPrompts.visibility,
-    }).from(userPrompts).where(eq(userPrompts.id, promptId))
+      name: prompts.name,
+      isDefault: prompts.isDefault,
+      createdAt: prompts.createdAt,
+      prompt: prompts.prompt,
+      // hearts: prompts.hearts,
+      category: prompts.category,
+      tags: prompts.tags,
+      visibility: prompts.visibility,
+    }).from(prompts).where(eq(prompts.id, promptId))
 
     if (!prompt.length) {
       throw new Error("No prompt found")

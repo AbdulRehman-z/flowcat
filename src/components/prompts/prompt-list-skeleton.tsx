@@ -12,3 +12,16 @@ export function PromptListSkeleton() {
     </div>
   )
 }
+
+
+export function CommunityPromptListSkeleton() {
+  return (
+    <div className="space-y-2 w-full">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="flex w-full items-center ">
+          <Skeleton className="size-10 w-full rounded-lg" />
+        </div>
+      ))}
+    </div>
+  )
+}

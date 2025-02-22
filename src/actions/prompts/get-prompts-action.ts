@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
-import { db, userPrompts } from "@/db"
+import { db, prompts } from "@/db"
 import { eq, sql } from "drizzle-orm"
 
 export const GetPromptsAction = async () => {
@@ -12,17 +12,17 @@ export const GetPromptsAction = async () => {
     }
 
     const userId = session.user.id
-    const prompts = await db.select({
-      id: userPrompts.id,
-      name: userPrompts.name,
-      isDefault: userPrompts.isDefault
-    }).from(userPrompts).where(eq(userPrompts.userId, userId)).orderBy(sql`${userPrompts.createdAt} DESC`).limit(10)
+    const result = await db.select({
+      id: prompts.id,
+      name: prompts.name,
+      isDefault: prompts.isDefault
+    }).from(prompts).where(eq(prompts.userId, userId)).orderBy(sql`${prompts.createdAt} DESC`).limit(10)
 
-    if (!prompts) {
+    if (!result) {
       throw new Error("No prompts found")
     }
 
-    return prompts
+    return result
   } catch (error) {
     console.error(error)
     throw new Error("Failed to fetch prompts")

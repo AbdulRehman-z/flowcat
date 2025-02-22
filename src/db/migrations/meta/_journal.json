@@ -5,50 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1739858467433,
-      "tag": "0000_numerous_squadron_supreme",
+      "when": 1740227066082,
+      "tag": "0000_aberrant_firebird",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1739885501886,
-      "tag": "0001_free_imperial_guard",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1739886504371,
-      "tag": "0002_boring_black_knight",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1740051289771,
-      "tag": "0003_dear_albert_cleary",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1740051498137,
-      "tag": "0004_early_doctor_octopus",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1740054811570,
-      "tag": "0005_brief_killmonger",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1740059005763,
-      "tag": "0006_pale_shiver_man",
+      "when": 1740227448197,
+      "tag": "0001_yielding_drax",
       "breakpoints": true
     }
   ]

@@ -17,7 +17,7 @@ export const setupUserAction = async () => {
   const [result] = await db.select({
     credits: userBalances.credits,
     isTrialCreditsAccquired: userBalances.isTrialCreditsAccquired
-  }).from(userBalances).where(and(eq(userBalances.userId, userId), eq(userBalances.isTrialCreditsAccquired, false)))
+  }).from(userBalances).where(and(eq(userBalances.userId, userId), eq(userBalances.isTrialCreditsAccquired, true)))
 
 
   if (!result) {

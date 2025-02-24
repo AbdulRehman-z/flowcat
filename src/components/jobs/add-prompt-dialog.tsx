@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useAddPrompt } from "@/hooks/prompts/use-add-prompt"
+import { SELECT_CATEGORY_ITEM } from "@/lib/constants"
 import { createNewPromptSchema, CreateNewPromptSchemaType } from "@/schemas/prompts-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { GalleryVerticalEnd, Plus, RotateCcw, Save, X } from "lucide-react"
@@ -15,7 +17,6 @@ import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
-import { useAddPrompt } from "@/hooks/prompts/use-add-prompt"
 
 export function AddPromptDialog() {
   const { addPrompt, isAdding } = useAddPrompt()
@@ -55,9 +56,9 @@ export function AddPromptDialog() {
 
 
   return (
-    <Dialog onOpenChange={() => form.reset()}>
-      <DialogTrigger asChild>
-        <Button variant="outline">
+    <Dialog onOpenChange={() => form.reset()} >
+      <DialogTrigger asChild className="w-full">
+        <Button variant="secondary" size={"lg"}>
           <Plus size={20} />
           Add new prompt</Button>
       </DialogTrigger>
@@ -131,13 +132,13 @@ export function AddPromptDialog() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="development">Development</SelectItem>
-                        <SelectItem value="marketing">Marketing</SelectItem>
-                        <SelectItem value="design">Design</SelectItem>
-                        <SelectItem value="productivity">Productivity</SelectItem>
-                        <SelectItem value="management">Management</SelectItem>
-                        <SelectItem value="health">Health</SelectItem>
-                        <SelectItem value="learning">Learning</SelectItem>
+                        {
+                          SELECT_CATEGORY_ITEM.map((item) => (
+                            <SelectItem key={item.label} value={item.value} className={item.color}>
+                              {item.label}
+                            </SelectItem>
+                          ))
+                        }
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -1,4 +1,4 @@
-import { GetCommunityPromptsCategory } from "@/actions/prompts/get-community-prompts";
+import { GetCommunityPromptsCategory } from "@/actions/prompts/get-community-prompts-action";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetCommunityPromptsCategory = (communitySelected: boolean) => {

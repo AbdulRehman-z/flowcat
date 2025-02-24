@@ -30,7 +30,7 @@ export default function CommunityDetails({ categoryName }: CommunityDetailsProps
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {categoryPrompts?.map((item, index) => (
-            <CommunityPromptCard item={item} index={index} key={index} />
+            <CommunityPromptCard item={item} key={index} />
           ))}
         </div>
       </motion.div>

@@ -21,7 +21,7 @@ export const promptLikes = pgTable("promptLikes", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  promptId: text("prompt_id").notNull().references(() => prompts.id, { onDelete: "cascade" })
+  promptId: text("prompt_id").references(() => prompts.id, { onDelete: "cascade" })
 }, (promptLikesTable) => ({
   userIdPromptIdIdx: uniqueIndex("user_id_prompt_id_idx").on(promptLikesTable.userId, promptLikesTable.promptId),
 }));

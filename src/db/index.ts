@@ -3,7 +3,7 @@ import { drizzle as DrizzleHttp } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
 import * as finance from './schemas/user-finance-schema';
-import * as prompts from './schemas/user-prompt-schema';
+import * as promptsTables from './schemas/user-prompt-schema';
 import * as jobsData from './schemas/user-data-schema';
 
 
@@ -16,7 +16,7 @@ let connectionString = env.AUTH_DRIZZLE_URL;
 const schema = {
   ...auth,
   ...finance,
-  ...prompts,
+  ...promptsTables,
   ...jobsData,
 
   // ...spread other schemas here
@@ -58,7 +58,9 @@ export const {
   accounts,
   users,
   userData,
-  userPrompts,
+  prompts,
+  promptLikes,
+  promptViews,
   userBalances,
   passwordResetTokens,
   twoFactorConfirmations,

@@ -1,4 +1,3 @@
-
 "use client"
 
 import {
@@ -12,17 +11,17 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { useDeletePrompt } from "@/hooks/prompts/use-delete-prompt"
+import { useRemoveFavouritePrompt } from "@/hooks/prompts/use-remove-favourite-prompt"
 import { Dispatch, SetStateAction } from "react"
 
-type DeletePromptDialogProps = {
+type RemoveFavouritePromptDialogProps = {
   isOpen: boolean,
   onClose: Dispatch<SetStateAction<boolean>>,
   promptId: string
 }
 
-export function DeletePromptDialog({ promptId, isOpen, onClose }: DeletePromptDialogProps) {
-  const { deletePrompt, isDeleting } = useDeletePrompt(promptId)
+export function RemoveFavouritePromptDialog({ promptId, isOpen, onClose }: RemoveFavouritePromptDialogProps) {
+  const { removeFavourite, isRemoving } = useRemoveFavouritePrompt()
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -30,14 +29,14 @@ export function DeletePromptDialog({ promptId, isOpen, onClose }: DeletePromptDi
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your prompt.
+            This action cannot be undone. This will permanently get removed from your favourites.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant="destructive" onClick={() => deletePrompt(promptId)} disabled={isDeleting}>
-              {isDeleting ? "Deleting..." : "Delete"}
+            <Button variant="destructive" onClick={() => removeFavourite(promptId)} disabled={isRemoving}>
+              {isRemoving ? "Deleting..." : "Remove"}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

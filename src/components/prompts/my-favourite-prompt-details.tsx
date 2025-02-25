@@ -3,31 +3,20 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { useEditPrompt } from "@/hooks/prompts/use-edit-prompt"
 import { useGetPrompt } from "@/hooks/prompts/use-get-prompt"
-import { useLikePublicPrompt } from "@/hooks/prompts/use-like-prompt"
-import type { CreateNewPromptSchemaType } from "@/schemas/prompts-schema"
 import { format } from "date-fns"
 import { AnimatePresence, motion } from "framer-motion"
-import { Calendar, Copy, Globe2, Heart, Loader2, Lock, MessageSquare, MoreHorizontal, Pencil, Tag, Trash2 } from "lucide-react"
+import { Calendar, Copy, Globe2, Heart, Loader2, Lock, MessageSquare, Tag } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
-import { EditPromptDialog } from "./edit-prompt-dialog"
-import { DeletePromptDialog } from "./delete-prompt-dialog"
+import { RemoveFavouritePromptDialog } from "./remove-favourite-prompt-dialog"
 
-type PromptDetailsProps = {
+type MyFavouritePromptDetailsProps = {
   promptId: string
 }
 
-const PromptDetailsLoadingSkeleton = () => {
+const MyFavouritePromptDetailsLoadingSkeleton = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex flex-col items-center space-y-4">
@@ -38,18 +27,13 @@ const PromptDetailsLoadingSkeleton = () => {
   )
 }
 
-export function PromptDetails({ promptId }: PromptDetailsProps) {
+export function MyFavouritePromptDetails({ promptId }: MyFavouritePromptDetailsProps) {
   // states
   const [isLiked, setIsLiked] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [category, setCategory] = useState<string>("")
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false)
 
   // hooks
   const { promptData, isFetchingPromptData } = useGetPrompt(promptId)
-  const { editPrompt, isEditing } = useEditPrompt(promptId)
-  const { likePrompt, isLiking } = useLikePublicPrompt(promptId, category)
-
   // handlers
   const handleCopyPrompt = () => {
     if (promptData?.prompt) {
@@ -58,21 +42,15 @@ export function PromptDetails({ promptId }: PromptDetailsProps) {
     }
   }
 
-  const handleLikePrompt = (promptCategory: string) => {
-    setCategory(promptCategory)
-    likePrompt()
+  const handleLikePrompt = () => {
     setIsLiked(!isLiked)
     toast.success(isLiked ? "Removed from favorites" : "Added to favorites")
   }
 
-  const handleEditSubmit = (formData: Partial<CreateNewPromptSchemaType>) => {
-    editPrompt(formData)
-    setIsEditDialogOpen(false)
-  }
 
 
   if (isFetchingPromptData) {
-    return <PromptDetailsLoadingSkeleton />
+    return <MyFavouritePromptDetailsLoadingSkeleton />
   }
 
   if (!promptData) return null
@@ -104,32 +82,14 @@ export function PromptDetails({ promptId }: PromptDetailsProps) {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="secondary" size="sm" disabled={isLiking} className="gap-2" onClick={() => handleLikePrompt(promptData.category)}>
+              <Button variant="secondary" size="sm" className="gap-2" onClick={handleLikePrompt}>
                 <Heart className={isLiked ? "fill-primary" : ""} size={16} />
-                <span>{promptData.likes}</span>
+                <span>{5}</span>
               </Button>
               <Button variant="secondary" size="sm" className="gap-2" onClick={handleCopyPrompt}>
                 <Copy size={16} />
                 Copy
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={() => setIsEditDialogOpen(true)}>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive" onSelect={() => setIsDeleteDialogOpen(true)}>
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
 
@@ -180,17 +140,9 @@ export function PromptDetails({ promptId }: PromptDetailsProps) {
             </motion.div>
           )}
 
-          <EditPromptDialog
-            isOpen={isEditDialogOpen}
-            onClose={() => setIsEditDialogOpen(false)}
-            onSubmit={handleEditSubmit}
-            defaultValues={promptData}
-            isLoading={isEditing}
-          />
-
-          <DeletePromptDialog
-            isOpen={isDeleteDialogOpen}
-            onClose={() => setIsDeleteDialogOpen(false)}
+          <RemoveFavouritePromptDialog
+            isOpen={isRemoveDialogOpen}
+            onClose={() => setIsRemoveDialogOpen(false)}
             promptId={promptId}
           />
         </div>

@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX "name_userId_idx" ON "userPrompts" USING btree ("user_id","title");

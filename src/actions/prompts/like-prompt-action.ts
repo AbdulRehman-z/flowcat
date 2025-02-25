@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth"
 import { db, promptLikes } from "@/db"
-import { sql } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 
 
 export const LikePrompt = async (promptId: string) => {
@@ -13,15 +13,18 @@ export const LikePrompt = async (promptId: string) => {
     }
 
     const userId = session.user.id
+    const isAlreadyLiked = await db.select({ id: promptLikes.id }).from(promptLikes).where(and(eq(promptLikes.promptId, promptId), eq(promptLikes.userId, userId)))
+
+    if (isAlreadyLiked.at(0)) {
+      await db.delete(promptLikes).where(and(eq(promptLikes.promptId, promptId), eq(promptLikes.userId, userId)))
+      return
+    }
+
     await db.insert(promptLikes)
       .values({
         userId,
         promptId
       })
-      .onConflictDoUpdate({
-        target: promptLikes.promptId,
-        set: { promptId: sql`NULL` },
-      });
 
   } catch (error) {
     console.error(error)

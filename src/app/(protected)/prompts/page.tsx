@@ -1,5 +1,5 @@
 import { GetPromptsAction } from "@/actions/prompts/get-prompts-action"
-import UserPromptsPageContent from "@/components/prompts/prompts-page-content"
+import PromptsPageContent from "@/components/prompts/prompts-page-content"
 import { Suspense } from "react"
 
 export default async function Page() {
@@ -9,7 +9,7 @@ export default async function Page() {
     <div className="flex h-full w-full">
       < div className="w-full bg-background" >
         <Suspense fallback={<div>Loading...</div>}>
-          <UserPromptsPageContent initialData={initialData} />
+          <PromptsPageContent initialData={initialData} />
         </Suspense>
       </div >
     </div >

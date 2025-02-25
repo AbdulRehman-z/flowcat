@@ -6,6 +6,7 @@ import { type Dispatch, type SetStateAction } from "react"
 import { AddPromptDialog } from "../jobs/add-prompt-dialog"
 import CommunityPromptsTabContent from "./community-prompts-tab-content"
 import MyPromptsTabContent from "./my-prompts-tab-content"
+import MyFavouritePromptsTabContent from "./my-favourite-prompts-tab-content"
 
 type promptsViewerProps = {
   initialData: Awaited<ReturnType<typeof GetPromptsAction>>
@@ -19,6 +20,10 @@ type promptsViewerProps = {
   setCommunityTabSelected: Dispatch<SetStateAction<boolean>>
   userPromptsFound: boolean
   setUserPromptsFound: Dispatch<SetStateAction<boolean>>
+  selectedFavouritePromptId: string | null
+  setSelectedFavouritePromptId: Dispatch<SetStateAction<string | null>>
+  favouritePromptsFound: boolean
+  setFavouritePromptsFound: Dispatch<SetStateAction<boolean>>
 }
 
 export function PromptsViewer({
@@ -33,6 +38,11 @@ export function PromptsViewer({
   setCommunityTabSelected,
   userPromptsFound,
   setUserPromptsFound,
+  favouritePromptsFound,
+  setFavouritePromptsFound,
+  selectedFavouritePromptId,
+  setSelectedFavouritePromptId,
+
 }: promptsViewerProps) {
 
   function handleTabChange(value: string) {
@@ -48,18 +58,23 @@ export function PromptsViewer({
       <div className="flex flex-col space-y-6">
         <h1 className="text-xl font-semibold tracking-tight">Prompt Library</h1>
         <Tabs defaultValue="my-prompts" className="w-full" onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="my-prompts" className="flex items-center gap-2" >
               My prompts
             </TabsTrigger>
             <TabsTrigger value="community-prompts" className="flex items-center gap-2" >
               Community
             </TabsTrigger>
+            <TabsTrigger value="my-favourites" className="flex items-center gap-2" >
+              My favourites
+            </TabsTrigger>
           </TabsList>
 
-          <MyPromptsTabContent initialData={initialData} selectedPromptId={selectedPromptId} setSelectedPrompt={setSelectedPrompt} promptsFound={userPromptsFound} setPromptsFound={setUserPromptsFound} />
+          <MyPromptsTabContent initialData={initialData} selectedPromptId={selectedPromptId} setSelectedPrompt={setSelectedPrompt} setPromptsFound={setUserPromptsFound} />
 
           <CommunityPromptsTabContent selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} communitySelected={communityTabSelected} />
+
+          <MyFavouritePromptsTabContent selectedFavouritePromptId={selectedFavouritePromptId} setSelectedFavouritePromptId={setSelectedFavouritePromptId} favouritePromptsFound={favouritePromptsFound} setFavouritePromptsFound={setFavouritePromptsFound} />
         </Tabs>
       </div>
 

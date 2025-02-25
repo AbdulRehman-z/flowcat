@@ -7,6 +7,7 @@ import { NeonDbError } from "@neondatabase/serverless";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+
 export const EditPromptAction = async (promptId: string, data: Partial<CreateNewPromptSchemaType>) => {
   try {
     const session = await auth();

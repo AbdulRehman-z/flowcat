@@ -14,27 +14,21 @@ type MyPromptsTabContentProps = {
   initialData: Awaited<ReturnType<typeof GetPromptsAction>>
   selectedPromptId: string | null
   setSelectedPrompt: Dispatch<SetStateAction<string | null>>
-  promptsFound: boolean
   setPromptsFound: Dispatch<SetStateAction<boolean>>
 }
 
 
-export default function MyPromptsTabContent({ initialData, selectedPromptId, setSelectedPrompt, promptsFound, setPromptsFound }: MyPromptsTabContentProps) {
+export default function MyPromptsTabContent({ initialData, selectedPromptId, setSelectedPrompt, setPromptsFound }: MyPromptsTabContentProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const { prompts, isFetchingPrompts } = useGetPrompts(initialData)
 
   const filteredPrompts = prompts.filter((prompt) => prompt.name.toLowerCase().includes(searchQuery.toLowerCase()))
-
 
   if (!isFetchingPrompts && !filteredPrompts.length) {
     setPromptsFound(false)
   } else {
     setPromptsFound(true)
   }
-
-
-
-
 
   return (
     <TabsContent value="my-prompts" className="mt-4">

@@ -61,6 +61,7 @@ export const {
   prompts,
   promptLikes,
   promptViews,
+  promptFavourited,
   userBalances,
   passwordResetTokens,
   twoFactorConfirmations,

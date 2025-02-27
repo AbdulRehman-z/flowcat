@@ -1,47 +1,29 @@
-import { LikePrompt } from "@/actions/prompts/like-prompt-action";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useState } from "react"
+import { toast } from "@/hooks/use-toast"
+import { LikePublicPromptAction } from "@/actions/prompts/like-public-prompt-action"
 
-export const useLikePublicPrompt = (category: string, promptId: string) => {
-  const queryClient = useQueryClient()
+export function useLikePublicPrompt(promptId: string, category: string) {
+  const [isLiking, setIsLiking] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
-  const { mutate: likePrompt, isPending: isLiking } = useMutation({
-    mutationFn: () => LikePrompt(promptId),
-    onMutate: async (promptId) => {
-      // Optimistic update
-      await queryClient.cancelQueries({
-        queryKey: [`prompts-category/${category}`]
-      });
-
-      const previousPrompts = queryClient.getQueryData([`prompts-category/${category}`]);
-
-      queryClient.setQueryData([`prompts-category/${category}`], (old: any) =>
-        old.map(prompt =>
-          prompt.id === promptId
-            ? {
-              ...prompt,
-              likes: prompt.isLikedByUser ? prompt.likes - 1 : prompt.likes + 1,
-              isLikedByUser: !prompt.isLikedByUser
-            }
-            : prompt
-        )
-      );
-
-      return { previousPrompts };
-    },
-    onError: (err, promptId, context) => {
-      queryClient.setQueryData(
-        [`prompts-category/${category}`],
-        context?.previousPrompts
-      );
-      toast.error("Failed to update like status");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [`prompts-category/${category}`]
-      });
+  const likePrompt = async () => {
+    try {
+      setIsLiking(true)
+      await LikePublicPromptAction(promptId)
+      return true
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to like prompt"
+      setError(err instanceof Error ? err : new Error(errorMessage))
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+      return false
+    } finally {
+      setIsLiking(false)
     }
-  });
+  }
 
-  return { likePrompt, isLiking };
+  return { likePrompt, isLiking, error }
 }

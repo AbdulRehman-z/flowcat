@@ -55,9 +55,9 @@ export default function CommunityPromptCard({ item }: CommunityPromptCardProps) 
                 <span>{item.likes}</span>
               </Button>
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild>
+                <SheetTrigger  asChild>
                   <Button variant="ghost" size="sm" className="hover:bg-secondary">
-                    <Expand size={16} />
+                    <Expand  size={16} />
                   </Button>
                 </SheetTrigger>
                 <SheetContent className="w-full sm:max-w-lg">

@@ -1,14 +1,14 @@
+import { GetPromptsAction } from "@/actions/prompts/get-prompts-action";
+import { useGetPrompts } from "@/hooks/prompts/use-get-prompts";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { TabsContent } from "@radix-ui/react-tabs";
-import { Search, MessageSquareText, MessageSquareWarning } from "lucide-react";
+import { MessageSquareText, Search } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { PromptListSkeleton } from "./prompt-list-skeleton";
-import { useGetPrompts } from "@/hooks/prompts/use-get-prompts";
-import { GetPromptsAction } from "@/actions/prompts/get-prompts-action";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Badge } from "../ui/badge";
 
 type MyPromptsTabContentProps = {
   initialData: Awaited<ReturnType<typeof GetPromptsAction>>

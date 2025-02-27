@@ -1,13 +1,26 @@
-import { GetPromptAction } from "@/actions/prompts/get-prompt-action"
-import { useQuery } from "@tanstack/react-query"
+import { getPrompt } from "@/actions/prompts"
+import { useState, useEffect } from "react"
 
-export const useGetPrompt = (promptId: string | null) => {
-  const { data: promptData, isFetching: isFetchingPromptData } = useQuery({
-    queryKey: [`prompt-${promptId}`],
-    queryFn: () => GetPromptAction(promptId!),
-    enabled: promptId !== null,
-    staleTime: 1000 * 60 * 5 // 5 minutes
-  })
+export function useGetPrompt(promptId: string) {
+  const [promptData, setPromptData] = useState<any>(null)
+  const [isFetchingPromptData, setIsFetchingPromptData] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
-  return { promptData, isFetchingPromptData }
+  useEffect(() => {
+    const fetchPrompt = async () => {
+      try {
+        setIsFetchingPromptData(true)
+        const data = await getPrompt(promptId)
+        setPromptData(data)
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error("Failed to fetch prompt"))
+      } finally {
+        setIsFetchingPromptData(false)
+      }
+    }
+
+    fetchPrompt()
+  }, [promptId])
+
+  return { promptData, isFetchingPromptData, error }
 }

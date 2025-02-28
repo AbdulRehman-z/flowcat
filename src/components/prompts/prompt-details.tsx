@@ -18,19 +18,19 @@ import { useSetDefault } from "@/hooks/prompts/use-set-default"
 import type { CreateNewPromptSchemaType } from "@/schemas/prompts-schema"
 import { format } from "date-fns"
 import { AnimatePresence, motion } from "framer-motion"
-import { 
-  ArrowLeft, 
-  Copy, 
-  Globe2, 
-  Heart, 
-  Loader2, 
-  Lock, 
-  MessageSquare, 
-  MoreHorizontal, 
-  Pencil, 
-  Star, 
-  Tag, 
-  Trash2 
+import {
+  ArrowLeft,
+  Calendar,
+  Copy,
+  Globe2,
+  Heart,
+  Loader2,
+  Lock,
+  MoreHorizontal,
+  Pencil,
+  Star,
+  Tag,
+  Trash2
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -55,7 +55,7 @@ const PromptDetailsLoadingSkeleton = () => {
 
 export function PromptDetails({ promptId, initialData }: PromptDetailsProps) {
   const [isMounted, setIsMounted] = useState(false)
-  const { data: promptData, isFetching: isFetchingPromptData } = useGetPrompt(promptId, initialData)
+  const { promptData, isFetching: isFetchingPromptData } = useGetPrompt(promptId, initialData)
   const [isLiked, setIsLiked] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -150,8 +150,8 @@ export function PromptDetails({ promptId, initialData }: PromptDetailsProps) {
                   Edit Prompt
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  className="text-destructive focus:text-destructive" 
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive"
                   onClick={() => setIsDeleteDialogOpen(true)}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />

@@ -3,7 +3,7 @@
 import type { GetPromptsAction } from "@/actions/prompts/get-prompts-action"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { type Dispatch, type SetStateAction } from "react"
-import { AddPromptDialog } from "../jobs/add-prompt-dialog"
+import { AddPromptDialog } from "./add-prompt-dialog"
 import CommunityPromptsTabContent from "./community-prompts-tab-content"
 import MyPromptsTabContent from "./my-prompts-tab-content"
 import MyFavouritePromptsTabContent from "./my-favourite-prompts-tab-content"

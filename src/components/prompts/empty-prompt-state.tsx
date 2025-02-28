@@ -1,5 +1,5 @@
 import { MessageSquareText, MessageSquareWarning } from "lucide-react"
-import { AddPromptDialog } from "../jobs/add-prompt-dialog"
+import { AddPromptDialog } from "./add-prompt-dialog"
 
 export function EmptyPromptState() {
   return (

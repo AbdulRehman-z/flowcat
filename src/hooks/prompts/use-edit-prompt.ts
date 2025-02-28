@@ -12,8 +12,9 @@ export const useEditPrompt = (promptId: string) => {
     onSuccess: () => {
       toast.success("Prompt updated successfully")
 
-      queryClient.invalidateQueries({ queryKey: [`prompts`] })
+      queryClient.invalidateQueries({ queryKey: ["prompts"] })
       queryClient.invalidateQueries({ queryKey: [`prompt-${promptId}`] })
+      queryClient.invalidateQueries({ queryKey: ["community-prompts"] })
 
     },
     onError: (error) => {

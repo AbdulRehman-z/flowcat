@@ -17,7 +17,7 @@ export const AI_MODELS = [
   { id: "gpt-3.5", name: "ChatGPT-3.5", provider: "OpenAI" },
   { id: "claude-3", name: "Claude 3", provider: "Anthropic" },
   { id: "deepseek-v3", name: "Deepseek v3", provider: "Deepseek" },
-  { id: "gemini-1.5-flash", name: "gemini-1.5-flash", provider: "Google" },
+  { id: "gemini-2.0-flash", name: "gemini-2.0-flash", provider: "Google" },
 ]
 
 export const PROMPT_TASTES = ["Formal", "Creative", "Casual", "Professional", "Technical"]

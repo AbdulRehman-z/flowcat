@@ -66,37 +66,50 @@ export default function JobsStatus() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
 
-  // Single effect to update the countdown and manage the pulsing effect.
+  // Effect to update the countdown and manage the pulsing effect.
   // It computes the remaining time based on the absolute targetTime.
   useEffect(() => {
-    // Do not update the countdown while scraping is in progress.
-    if (isScraping) return
-
     const interval = setInterval(() => {
-      const now = Date.now()
-      const remaining = targetTime - now
+      // Only decrease the countdown if not scraping
+      if (!isScraping) {
+        const now = Date.now()
+        const remaining = targetTime - now
 
-      if (remaining <= 0) {
-        // When the countdown reaches zero, reset the timer.
-        const newTarget = Date.now() + refreshingJobsInterval
-        setTargetTime(newTarget)
-        setCountdown(refreshingJobsInterval)
-        setIsPulsing(false)
-      } else {
-        setCountdown(remaining)
-        // Enable pulsing when remaining time is between 1 and 6 seconds.
-        setIsPulsing(remaining <= 6000 && remaining > 1000)
+        if (remaining <= 0) {
+          // When the countdown reaches zero, reset the timer.
+          const newTarget = Date.now() + refreshingJobsInterval
+          setTargetTime(newTarget)
+          setCountdown(refreshingJobsInterval)
+          setIsPulsing(false)
+        } else {
+          setCountdown(remaining)
+          // Enable pulsing when remaining time is between 1 and 6 seconds.
+          setIsPulsing(remaining <= 6000 && remaining > 1000)
+        }
       }
     }, 100) // 100ms interval for a smooth UI
 
     return () => clearInterval(interval)
   }, [targetTime, isScraping, refreshingJobsInterval])
 
-  // Effect to trigger notifications when scraping transitions from active to complete.
+  // Effect to handle scraping state transitions
   useEffect(() => {
     const wasScraping = prevIsScrapingRef.current
 
+    // When starting to scrape
+    if (!wasScraping && isScraping) {
+      // Store the current countdown to restore later
+      // No need to change targetTime here
+    }
+
+    // When finishing scraping
     if (wasScraping && !isScraping) {
+      // Reset the timer to full interval
+      const newTarget = Date.now() + refreshingJobsInterval
+      setTargetTime(newTarget)
+      setCountdown(refreshingJobsInterval)
+      setIsPulsing(false)
+
       // Play the notification sound.
       try {
         notificationSound.current?.play()

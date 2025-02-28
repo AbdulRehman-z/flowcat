@@ -33,7 +33,7 @@ export function MyFavouritePromptDetails({ promptId }: MyFavouritePromptDetailsP
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false)
 
   // hooks
-  const { promptData, isFetchingPromptData } = useGetPrompt(promptId)
+  const { promptData, isFetching } = useGetPrompt(promptId)
   // handlers
   const handleCopyPrompt = () => {
     if (promptData?.prompt) {
@@ -49,7 +49,7 @@ export function MyFavouritePromptDetails({ promptId }: MyFavouritePromptDetailsP
 
 
 
-  if (isFetchingPromptData) {
+  if (isFetching) {
     return <MyFavouritePromptDetailsLoadingSkeleton />
   }
 

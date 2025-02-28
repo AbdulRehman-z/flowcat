@@ -1,21 +1,23 @@
 "use client"
 
+import { useGetPrompt } from "@/hooks/prompts/use-get-prompt"
+import { useGetPrompts } from "@/hooks/prompts/use-get-prompts"
+import { AI_MODELS, PROMPT_TASTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { Job } from "@/types/jobs"
 import { useCompletion } from "@ai-sdk/react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader2, RefreshCw, Save, Volume2 } from "lucide-react"
-import { useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
-import { Textarea } from "../ui/textarea"
-import { PROMPT_TASTES, AI_MODELS } from "@/lib/constants"
 import { Label } from "../ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Slider } from "../ui/slider"
-
+import { Textarea } from "../ui/textarea"
+import { Input } from "../ui/input"
+import { Value } from "@radix-ui/react-select"
 
 type ProposalSheetProps = {
   job: Job
@@ -27,14 +29,33 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
   const [model, setModel] = useState("gpt-3.5");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const [selectedPropmt, setSelectedPropmt] = useState()
+  const [prompt, setPrompt] = useState<string>("");
+  const [promptId, setPromptId] = useState("");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const { prompts, isFetchingPrompts } = useGetPrompts();
+  const { promptData, isFetching } = useGetPrompt(promptId);
+
+  // Update prompt when promptData changes
+  useEffect(() => {
+    if (promptData?.prompt) {
+      setPrompt(promptData.prompt);
+    }
+  }, [promptData]);
+
+  // Set selectedJob when job prop changes
+  useEffect(() => {
+    if (job) {
+      setSelectedJob(job);
+    }
+  }, [job]);
 
   const {
     completion,
     setCompletion,
+    complete,
     input,
     handleInputChange,
-    handleSubmit: handleGenerationSubmit,
     isLoading,
   } = useCompletion({
     api: "/api/generate",
@@ -43,6 +64,7 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
       maxWords: wordCount,
       jobDetails: selectedJob,
       promptTaste,
+      prompt,
     },
     onResponse: () => {
       toast.success("Generating proposal...");
@@ -51,22 +73,27 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
       toast.success("Proposal generated successfully!");
     },
     onError: (error) => {
-      toast.error(error.message);
+      console.error("Generation error:", error);
+      toast.error(error.message || "An error occurred during generation");
     },
   });
 
-  const handleGenerate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePromptSelect = (value: string) => {
+    setPromptId(value);
+  };
+
+  const handleGenerate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input.trim()) {
-      toast.error("please provide a prompt!");
+
+    if (!selectedJob) {
+      toast.error("Job details are missing");
       return;
     }
-    handleGenerationSubmit(e);
+
   };
 
   const handleSpeak = () => {
     if (!completion) return;
-    console.log("speaking");
 
     if (isSpeaking) {
       window.speechSynthesis.cancel();
@@ -80,25 +107,47 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
     setIsSpeaking(true);
   };
 
+  const handleSave = () => {
+    if (!completion) return;
+
+    try {
+      const savedProposals = JSON.parse(localStorage.getItem('savedProposals') || '[]');
+      savedProposals.push({
+        id: Date.now().toString(),
+        content: completion,
+        jobTitle: selectedJob?.title || 'Untitled Job',
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('savedProposals', JSON.stringify(savedProposals));
+      toast.success("Proposal saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save proposal");
+    }
+  };
+
   return (
     <>
       <Sheet
+        open={isSheetOpen}
         onOpenChange={(open) => {
+          setIsSheetOpen(open);
           if (open) {
             setSelectedJob(job);
           } else {
-            setSelectedJob(null);
-            setCompletion("");
+            // Only reset if closing
+            if (!open) {
+              setCompletion("");
+            }
           }
         }}
       >
         <SheetTrigger asChild>
-          <Button variant="outline">Generate Proposal</Button>
+          <Button>Cook Proposal</Button>
         </SheetTrigger>
-        <SheetContent className="w-full  sm:max-w-[600px]">
+        <SheetContent className="w-full sm:max-w-[600px]">
           <form onSubmit={handleGenerate} className="h-full">
             <SheetHeader>
-              <SheetTitle>Generate Proposal</SheetTitle>
+              <SheetTitle>Cook Proposal</SheetTitle>
               <SheetDescription>
                 Generate an AI-powered proposal for this job opportunity
               </SheetDescription>
@@ -109,7 +158,7 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                   <Label>Taste</Label>
                   <Select value={promptTaste} onValueChange={setPromptTaste}>
                     <SelectTrigger>
-                      <span>Select Taste</span> {/* Replaced SelectValue */}
+                      <SelectValue placeholder="Select Taste" />
                     </SelectTrigger>
                     <SelectContent>
                       {PROMPT_TASTES.map((prompt) => (
@@ -125,7 +174,7 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                   <Label>AI Model</Label>
                   <Select value={model} onValueChange={setModel}>
                     <SelectTrigger>
-                      <span>Select Model</span> {/* Replaced SelectValue */}
+                      <SelectValue placeholder="Select Model" />
                     </SelectTrigger>
                     <SelectContent>
                       {AI_MODELS.map((model) => (
@@ -151,16 +200,35 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
               </div>
 
               <div className="relative h-full space-y-5">
-                {/* Prompt Input */}
+                {/* Prompt Selection */}
                 <div className="grid gap-2">
-                  <Label htmlFor="prompt">Prompt</Label>
-                  <Input
-                    id="prompt"
-                    value={input}
-                    onChange={handleInputChange}
-                    placeholder="Enter your prompt here..."
-                  />
+                  <Label>Select Prompt</Label>
+                  <Select value={promptId} onValueChange={handlePromptSelect}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select desired prompt from library" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {isFetchingPrompts ? (
+                        <SelectItem value="loading" disabled>Loading prompts...</SelectItem>
+                      ) : prompts && prompts.length > 0 ? (
+                        prompts.map((prompt) => (
+                          <SelectItem key={prompt.id} value={prompt.id}>
+                            {prompt.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="empty" disabled>No prompts available</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+
+                  {isFetching && <p className="text-sm text-muted-foreground">Loading prompt content...</p>}
                 </div>
+                <Input
+                  readOnly
+                  value={promptData?.prompt}
+                  onChange={handleInputChange}
+                />
 
                 <Textarea
                   value={completion}
@@ -189,10 +257,17 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                   size="icon"
                   disabled={!completion}
                   onClick={handleSpeak}
+                  type="button"
                 >
                   <Volume2 className={cn("h-4 w-4", isSpeaking && "text-primary")} />
                 </Button>
-                <Button variant="outline" size="icon" disabled={!completion}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  disabled={!completion}
+                  onClick={handleSave}
+                  type="button"
+                >
                   <Save className="h-4 w-4" />
                 </Button>
               </div>

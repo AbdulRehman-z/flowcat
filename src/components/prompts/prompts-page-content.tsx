@@ -47,13 +47,7 @@ export default function PromptsPageContent({ initialData }: PromptsPageProps) {
 
       {/* Main content */}
       <div className="col-span-1 md:col-span-3 overflow-auto bg-background">
-        {myFavouritesTabSelected ? (
-          selectedFavouritePromptId ? (
-            <MyFavouritePromptDetails promptId={selectedFavouritePromptId} />
-          ) : (
-            <EmptyFavouriteState />
-          )
-        ) : communityTabSelected ? (
+        {communityTabSelected ? (
           selectedCategory ? (
             <CommunityDetails categoryName={selectedCategory} />
           ) : (

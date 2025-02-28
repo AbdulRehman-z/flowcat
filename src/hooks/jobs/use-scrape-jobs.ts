@@ -8,7 +8,7 @@ export const useScrapeJobs = (initialData?: Job[]) => {
   console.log({ refreshingJobsInterval })
 
 
-  const { data: jobs, isFetching } = useQuery({
+  const { data: jobs, isLoading, isRefetching } = useQuery({
     queryKey: ["jobs"],
     queryFn: ScrapeJobsAction,
     refetchOnWindowFocus: false,
@@ -18,5 +18,5 @@ export const useScrapeJobs = (initialData?: Job[]) => {
     // initialData
   })
 
-  return { jobs, isFetching }
+  return { jobs, isLoading, isRefetching }
 }

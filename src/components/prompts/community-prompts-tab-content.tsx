@@ -6,7 +6,7 @@ import { MessageSquareText } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { CommunityPromptListSkeleton, PromptListSkeleton } from "./prompt-list-skeleton";
+import { CommunityPromptListSkeleton } from "./prompt-list-skeleton";
 
 type CommunityPromptsTabContentProps = {
   selectedCategory: string | null;

@@ -19,23 +19,23 @@ type CommunityPromptCardProps = {
 
 export default function CommunityPromptCard({ item }: CommunityPromptCardProps) {
   const { likePrompt, isLiking } = useLikePublicPrompt(item.category, item.id)
-  const { editPrompt, isEditing } = useEditPrompt(item.id)
+  // const { editPrompt, isEditing } = useEditPrompt(item.id)
   const [isOpen, setIsOpen] = useState(false)
 
   const handleLikePrompt = () => {
     likePrompt()
   }
 
-  const handleAddToFavorites = () => {
-    toast.success("Added to favorites")
-    // Add your favorites logic here
-  }
+  // const handleAddToFavorites = () => {
+  //   toast.success("Added to favorites")
+  //   // Add your favorites logic here
+  // }
 
-  const handleSetAsDefault = () => {
-    editPrompt(item)
-    toast.success("Set as default prompt")
-    // Add your set default logic here
-  }
+  // const handleSetAsDefault = () => {
+  //   editPrompt(item)
+  //   toast.success("Set as default prompt")
+  //   // Add your set default logic here
+  // }
 
   return (
     <>
@@ -87,7 +87,7 @@ export default function CommunityPromptCard({ item }: CommunityPromptCardProps) 
                       <p className="text-sm text-muted-foreground whitespace-pre-wrap">{item.prompt}</p>
                     </div>
                   </div>
-                  <SheetFooter className="absolute bottom-0 left-0 right-0 p-6 bg-background border-t">
+                  {/* <SheetFooter className="absolute bottom-0 left-0 right-0 p-6 bg-background border-t">
                     <div className="flex w-full gap-4">
                       <Button className="flex-1 gap-2" variant="outline" onClick={handleAddToFavorites}>
                         <Star size={16} />
@@ -98,7 +98,7 @@ export default function CommunityPromptCard({ item }: CommunityPromptCardProps) 
                         Set as Default
                       </Button>
                     </div>
-                  </SheetFooter>
+                  </SheetFooter> */}
                 </SheetContent>
               </Sheet>
             </div>

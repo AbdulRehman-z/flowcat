@@ -12,7 +12,6 @@ type JobCardProps = {
 };
 
 export default function JobCard({ savedJobs }: JobCardProps) {
-
   return (
     <>
       {savedJobs?.length > 0 && (
@@ -87,7 +86,7 @@ export default function JobCard({ savedJobs }: JobCardProps) {
                     {job.tokens.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {job.tokens.map((token, i) => (
-                          <Badge key={i}>
+                          <Badge variant={"secondary"} key={i}>
                             {token}
                           </Badge>
                         ))}
@@ -95,8 +94,8 @@ export default function JobCard({ savedJobs }: JobCardProps) {
                     )}
                   </div>
                   <div className="ml-auto space-x-2">
-                    <ProposalSheet job={job} />
                     <Button variant="outline">Save</Button>
+                    <ProposalSheet job={job} />
                   </div>
                 </div>
               </AccordionContent>

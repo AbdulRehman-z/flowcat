@@ -6,7 +6,6 @@ import { type Dispatch, type SetStateAction } from "react"
 import { AddPromptDialog } from "./add-prompt-dialog"
 import CommunityPromptsTabContent from "./community-prompts-tab-content"
 import MyPromptsTabContent from "./my-prompts-tab-content"
-import MyFavouritePromptsTabContent from "./my-favourite-prompts-tab-content"
 
 type promptsViewerProps = {
   initialData: Awaited<ReturnType<typeof GetPromptsAction>>
@@ -20,10 +19,10 @@ type promptsViewerProps = {
   setCommunityTabSelected: Dispatch<SetStateAction<boolean>>
   userPromptsFound: boolean
   setUserPromptsFound: Dispatch<SetStateAction<boolean>>
-  selectedFavouritePromptId: string | null
-  setSelectedFavouritePromptId: Dispatch<SetStateAction<string | null>>
-  favouritePromptsFound: boolean
-  setFavouritePromptsFound: Dispatch<SetStateAction<boolean>>
+  // selectedFavouritePromptId: string | null
+  // setSelectedFavouritePromptId: Dispatch<SetStateAction<string | null>>
+  // favouritePromptsFound: boolean
+  // setFavouritePromptsFound: Dispatch<SetStateAction<boolean>>
 }
 
 export function PromptsViewer({
@@ -32,17 +31,9 @@ export function PromptsViewer({
   setSelectedPrompt,
   selectedCategory,
   setSelectedCategory,
-  searchQuery,
-  setSearchQuery,
   communityTabSelected,
   setCommunityTabSelected,
-  userPromptsFound,
   setUserPromptsFound,
-  favouritePromptsFound,
-  setFavouritePromptsFound,
-  selectedFavouritePromptId,
-  setSelectedFavouritePromptId,
-
 }: promptsViewerProps) {
 
   function handleTabChange(value: string) {
@@ -74,7 +65,7 @@ export function PromptsViewer({
 
           <CommunityPromptsTabContent selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} communitySelected={communityTabSelected} />
 
-          <MyFavouritePromptsTabContent selectedFavouritePromptId={selectedFavouritePromptId} setSelectedFavouritePromptId={setSelectedFavouritePromptId} favouritePromptsFound={favouritePromptsFound} setFavouritePromptsFound={setFavouritePromptsFound} />
+          {/* <MyFavouritePromptsTabContent selectedFavouritePromptId={selectedFavouritePromptId} setSelectedFavouritePromptId={setSelectedFavouritePromptId} favouritePromptsFound={favouritePromptsFound} setFavouritePromptsFound={setFavouritePromptsFound} /> */}
         </Tabs>
       </div>
 

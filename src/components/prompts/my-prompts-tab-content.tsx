@@ -22,9 +22,9 @@ export default function MyPromptsTabContent({ initialData, selectedPromptId, set
   const [searchQuery, setSearchQuery] = useState('')
   const { prompts, isFetchingPrompts } = useGetPrompts(initialData)
 
-  const filteredPrompts = prompts.filter((prompt) => prompt.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredPrompts = prompts?.filter((prompt) => prompt.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  if (!isFetchingPrompts && !filteredPrompts.length) {
+  if (!isFetchingPrompts && !filteredPrompts?.length) {
     setPromptsFound(false)
   } else {
     setPromptsFound(true)

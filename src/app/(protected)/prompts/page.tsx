@@ -8,7 +8,7 @@ export default async function Page() {
 
   return (
     <div className="flex h-full w-full">
-      <div className="w-full bg-background p-6">
+      <div className="w-full">
         <Suspense fallback={<LoadingOverlay />}>
           <PromptsPageContent initialData={initialData} />
         </Suspense>

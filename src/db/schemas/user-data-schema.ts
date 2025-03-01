@@ -9,4 +9,5 @@ export const userData = pgTable("userData", {
   favouritePrompts: text("favouritePrompts").array().default([]),
   appliedJobs: jsonb("appliedJobs").array().default([]),
   savedJobs: jsonb("savedJobs").array().default([]),
+  jobsUrl: text("jobsUrl"),
 })

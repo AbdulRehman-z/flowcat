@@ -1,0 +1,1 @@
+ALTER TABLE "userData" ADD COLUMN "savedFilters" jsonb[] DEFAULT '{}';

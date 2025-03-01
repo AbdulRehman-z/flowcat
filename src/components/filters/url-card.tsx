@@ -1,21 +1,27 @@
 "use client"
 
-import { useState } from "react"
-import { Check, Copy } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useApplyFilter } from "@/hooks/filters/use-apply-filters";
+import { Check, Copy, Loader } from "lucide-react";
+import { useState } from "react";
 
-interface UrlCardProps {
-  url: string
+type UrlCardProps = {
+  url: string;
 }
 
 export function UrlCard({ url }: UrlCardProps) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
+  const { saveFilter, isSaving } = useApplyFilter()
 
   const copyUrl = async () => {
-    await navigator.clipboard.writeText(url)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  function handleApplyFilters() {
+    saveFilter(url)
   }
 
   return (
@@ -39,8 +45,20 @@ export function UrlCard({ url }: UrlCardProps) {
             </>
           )}
         </Button>
-        <Button className="text-sm font-medium">Save Filters</Button>
+        <Button onClick={handleApplyFilters} disabled={isSaving}>
+          {isSaving ? (
+            <>
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
+              Applying...
+            </>
+          ) : (
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Apply
+            </>
+          )}
+        </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

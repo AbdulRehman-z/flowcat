@@ -8,15 +8,23 @@ import { CategorySelect } from "./category-select"
 import { LocationSelect } from "./location-select"
 import { TimezoneSelect } from "./timezone-select"
 
-interface FilterSidebarProps {
+type FilterSidebarProps = {
   filters: FilterState
   onChange: (filters: FilterState) => void
+  className?: string
 }
 
-export function FilterSidebar({ filters, onChange }: FilterSidebarProps) {
+export function FilterSidebar({ filters, onChange, className }: FilterSidebarProps) {
+  const handleCategoryChange = (value: string) => {
+    onChange({
+      ...filters,
+      category: value,
+    })
+  }
+
   return (
-    <div className="w-80 border-r p-6 space-y-6">
-      <CategorySelect value={filters.category} onChange={(category) => onChange({ ...filters, category })} />
+    <div className={`w-80 border-r p-6 space-y-6 ${className || ''}`}>
+      <CategorySelect value={filters.category} onChange={handleCategoryChange} />
 
       <Accordion type="multiple" className="w-full" >
         <AccordionItem value="projectLength">
@@ -98,9 +106,9 @@ export function FilterSidebar({ filters, onChange }: FilterSidebarProps) {
           <AccordionTrigger className="text-sm font-medium">Experience level</AccordionTrigger>
           <AccordionContent className="space-y-2">
             {[
-              { id: "entry", label: "Entry Level" },
-              { id: "intermediate", label: "Intermediate" },
-              { id: "expert", label: "Expert" },
+              { id: "1", label: "Entry Level" },
+              { id: "2", label: "Intermediate" },
+              { id: "3", label: "Expert" },
             ].map(({ id, label }) => (
               <div key={id} className="flex items-center space-x-2">
                 <Checkbox

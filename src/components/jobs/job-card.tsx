@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Job } from "@/types/jobs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Award, Briefcase, Clock, DollarSign } from "lucide-react";
+import { Award, Briefcase, Clock, DollarSign, Save } from "lucide-react";
 import { CSSProperties } from "react";
 import { Button } from "../ui/button";
 import ProposalSheet from "./proposal-sheet";
@@ -94,7 +94,9 @@ export default function JobCard({ savedJobs }: JobCardProps) {
                     )}
                   </div>
                   <div className="ml-auto space-x-2">
-                    <Button variant="outline">Save</Button>
+                    <Button variant="outline">
+                      <Save className="size-4 mr-1" />
+                      Save</Button>
                     <ProposalSheet job={job} />
                   </div>
                 </div>

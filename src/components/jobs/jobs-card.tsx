@@ -7,13 +7,15 @@ import { useScrapeJobs } from "@/hooks/jobs/use-scrape-jobs";
 import { Job } from "@/types/jobs";
 import JobCard from "./job-card";
 import JobsSkeleton from "./jobs-skeleton";
+import { useGetUrl } from "@/hooks/filters/use-get-url";
 
 type JobsCardProps = {
   initialData?: Job[];
 };
 
 export default function JobsCard({ initialData }: JobsCardProps) {
-  const { jobs, isLoading, isRefetching } = useScrapeJobs();
+  const { url } = useGetUrl();
+  const { jobs, isLoading, isRefetching } = useScrapeJobs(initialData, url!);
   const { setIsScraping, setJobs, jobs: savedJobs } = useJobsStatusContext();
 
   if (jobs && jobs.length > 0 && jobs !== savedJobs) {

@@ -31,7 +31,8 @@ export const setupUserAction = async () => {
       db.insert(userData).values({
         userId,
         defaultPrompt: "",
-      })
+        jobsUrl: "",
+      }),
     ])
   }
 

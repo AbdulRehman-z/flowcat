@@ -2,7 +2,8 @@
 
 import { ExecuteScraping } from "@/lib/jobs/execute-scraping";
 
-export const ScrapeJobsAction = async () => {
-  const jobs = await ExecuteScraping()
-  return jobs
+export const ScrapeJobsAction = async (url: string) => {
+  console.log({ url })
+  const jobs = await ExecuteScraping(url);
+  return jobs;
 }

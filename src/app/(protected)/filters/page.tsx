@@ -42,7 +42,7 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
 export default function JobFilters() {
   const [filters, dispatch] = useReducer(filterReducer, initialState)
   const [url, setUrl] = useState(generateUrl(filters))
-  const [filterTags, setFilterTags] = useState<string[]>([])
+  const [filterTags, setFilterTags] = useState(getFilterTags(filters))
 
   useEffect(() => {
     setUrl(generateUrl(filters))

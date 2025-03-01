@@ -22,9 +22,9 @@
 
 
 export enum Platform {
-  UPWORK = "Upwork",
-  FREELANCER = "Freelancer",
-  GURU = "Guru",
+  UPWORK = "upwork",
+  FREELANCER = "freelancer",
+  FIVERR = "fiverr",
 }
 
 
@@ -32,9 +32,12 @@ export type Job = {
   platform: Platform;
   posted: string;
   title: string;
+  description?: string;
+  clientName?: string;
   jobType: string;
   experienceLevel: string;
   clientBudget: string;
   duration: string;
   tokens: string[];
+  applyUrl?: string;
 }

@@ -3,14 +3,12 @@ import { useJobsStatusContext } from "@/contexts/jobs-status-context"
 import { Job } from "@/types/jobs"
 import { useQuery } from "@tanstack/react-query"
 
-export const useScrapeJobs = (initialData?: Job[]) => {
+export const useScrapeJobs = (initialData?: Job[], url: string) => {
   const { refreshingJobsInterval } = useJobsStatusContext()
-  console.log({ refreshingJobsInterval })
-
 
   const { data: jobs, isLoading, isRefetching } = useQuery({
     queryKey: ["jobs"],
-    queryFn: ScrapeJobsAction,
+    queryFn: () => ScrapeJobsAction(url),
     refetchOnWindowFocus: false,
     // refetchOnMount: true,
     staleTime: refreshingJobsInterval,

@@ -19,7 +19,14 @@ export type FilterState = {
   timeZones: string[]
 }
 
-export type FilterAction = {
-  type: string
-  payload: any
+export type FilterAction =
+  | { type: "UPDATE_FILTERS"; payload: Partial<FilterState> }
+  | { type: "RESET_FILTERS"; payload?: FilterState }
+
+export type SavedFilter = {
+  id: string
+  name: string
+  filters: FilterState
+  url: string
+  createdAt: string
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "userSavedJobs" DROP COLUMN "posted";

@@ -58,6 +58,7 @@ export const {
   accounts,
   users,
   userData,
+  userSavedJobs,
   prompts,
   promptLikes,
   promptViews,

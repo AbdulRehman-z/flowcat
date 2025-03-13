@@ -3,11 +3,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useJobsStatusContext } from "@/contexts/jobs-status-context";
+import { useGetUrl } from "@/hooks/filters/use-get-url";
 import { useScrapeJobs } from "@/hooks/jobs/use-scrape-jobs";
 import { Job } from "@/types/jobs";
+import { Accordion } from "../ui/accordion";
 import JobCard from "./job-card";
 import JobsSkeleton from "./jobs-skeleton";
-import { useGetUrl } from "@/hooks/filters/use-get-url";
 
 type JobsCardProps = {
   initialData?: Job[];
@@ -40,7 +41,11 @@ export default function JobsCard({ initialData }: JobsCardProps) {
             {isLoading ? (
               <JobsSkeleton />
             ) : (
-              <JobCard savedJobs={savedJobs} />
+              savedJobs.map((job, index) => (
+                <Accordion key={index} type="single" collapsible className="space-y-2">
+                  <JobCard job={job} index={index} />
+                </Accordion>
+              ))
             )}
           </div>
         </ScrollArea>

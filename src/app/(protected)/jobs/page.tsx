@@ -3,9 +3,9 @@ import AvailableCreditsCard from "@/components/jobs/credits-card";
 import JobsCard from "@/components/jobs/jobs-card";
 import JobsStatus from "@/components/jobs/jobs-status";
 import { ReferralCard } from "@/components/jobs/referal-card";
+import SavedJobs from "@/components/jobs/saved-jobs";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 
 export default async function Page() {
@@ -13,28 +13,15 @@ export default async function Page() {
   const initialCreditsData = await GetAvailableCredits()
   return (
     <div className="h-full w-full bg-background">
-      <div className="container min-w-full  px-10 pt-5 pb-2">
-        {/* Tabs */}
+      <div className="container min-w-full px-10 pt-5 pb-2">
         <div className="mb-6 opacity-100">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center gap-4 justify-end">
-              <Button variant="outline" size="sm">
-                <Star className="h-4 w-4 mr-2" />
-                Saved Jobs
-              </Button>
-              <Button variant="default" size="sm">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Upgrade Pro
-              </Button>
-            </div>
+          <div className="flex items-center gap-4 justify-end">
+            <SavedJobs />
+            <Button variant="default" className="gap-x-2" size="sm">
+              <TrendingUp className="size-4 " />
+              Upgrade Pro
+            </Button>
           </div>
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList>
-              <TabsTrigger value="all">All Jobs</TabsTrigger>
-              <TabsTrigger value="recommended">Recommended</TabsTrigger>
-              <TabsTrigger value="applied">Applied</TabsTrigger>
-            </TabsList>
-          </Tabs>
         </div>
 
         {/* Main Content Grid */}

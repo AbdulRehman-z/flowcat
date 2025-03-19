@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
 
 export const ExecuteScraping = async (url: string): Promise<Job[]> => {
   const browser = await puppeteer.launch({
-    headless: true, // Keep visible for debugging
+    headless: false, // Keep visible for debugging
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
@@ -25,7 +25,7 @@ export const ExecuteScraping = async (url: string): Promise<Job[]> => {
     // Wait for dynamic content using reliable selector
     await page.waitForSelector('[data-test="JobTile"]', {
       visible: true,
-      timeout: 15000
+      timeout: 60000
     });
 
     // Get all job elements
@@ -73,50 +73,3 @@ export const ExecuteScraping = async (url: string): Promise<Job[]> => {
     await browser.close();
   }
 };
-
-// // Click job to open slider
-// await jobHandle.click();
-
-// // Wait for slider animation and content
-// await page.waitForSelector('[data-test="UpCSliderBody"]', {
-//   visible: true,
-//   timeout: 5000
-// });
-
-// // Extract data from slider content
-// const jobData = await page.evaluate(() => {
-//   const getText = (selector: string) =>
-//     document.querySelector(selector)?.textContent?.trim() || 'N/A';
-
-//   const getNumber = (selector: string) =>
-//     parseFloat(getText(selector).replace(/[^\d.]/g, '')) || 0;
-
-//   // Main data extraction
-//   return {
-//     id: window.location.href.split('/').pop() || '',
-//     title: getText('h4.m-0'),
-//     price: {
-//       amount: getNumber('[data-test="BudgetAmount"] strong'),
-//       type: getText('[data-cy="clock-hourly"] + div .description') as 'Fixed' | 'Hourly'
-//     },
-//     description: getText('[data-test="Description"]'),
-//     experience: getText('[data-cy="expertise"] strong'),
-//     skills: Array.from(document.querySelectorAll('[data-test="Skill"]'))
-//       .map(el => el.textContent?.trim() || ''),
-//     client: {
-//       name: getText('[data-test="client-name"]'),
-//       score: getNumber('[data-test="client-rating"]'),
-//       spent: getText('[data-qa="client-spend"]'),
-//       hireRate: getNumber('[data-qa="client-hires"]'),
-//       location: getText('[data-qa="client-location"] strong'),
-//       jobsPosted: getNumber('[data-test="OtherJobs"] header h5'),
-//       activeHires: getNumber('[data-qa="client-hires"]')
-//     },
-//     posted: getText('[data-test="PostedOn"] span')
-//   };
-// });
-
-// jobs.push(jobData);
-
-// // Close slider
-// await page.click('[data-test="UpCIcon"]');

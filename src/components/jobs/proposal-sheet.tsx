@@ -6,25 +6,27 @@ import { AI_MODELS, PROMPT_TASTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { Job } from "@/types/jobs"
 import { useCompletion } from "@ai-sdk/react"
-import { AnimatePresence, motion } from "framer-motion"
-import { CheckCircle, CopyCheck, CopyIcon, FileText, Loader2, MessageCircle, RefreshCw, Save, Volume2, Wand2, Star, MessageCircleMore } from "lucide-react"
+import { AnimatePresence } from "framer-motion"
+import { CheckCircle, CopyCheck, CopyIcon, FileText, Loader2, MessageCircleMore, RefreshCw, Save, Star, Volume2, Wand2 } from "lucide-react"
 import { FormEvent, useEffect, useReducer, useRef } from "react"
 import { toast } from "sonner"
+import { z } from "zod"
+import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Label } from "../ui/label"
+import { ScrollArea } from "../ui/scroll-area"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Slider } from "../ui/slider"
-import { Textarea } from "../ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Textarea } from "../ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
-import { Badge } from "../ui/badge"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
-import { ScrollArea } from "../ui/scroll-area"
-import { z } from "zod"
+import { useUpdateProposalGenerationStatus } from "@/hooks/billings/use-update-proposal-generation-status"
 
 type ProposalSheetProps = {
-  job: Job
+  job: Job,
+  title: string
 }
 
 // Validation schema
@@ -147,7 +149,11 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export default function ProposalSheet({ job }: ProposalSheetProps) {
+export default function ProposalSheet({ job, title }: ProposalSheetProps) {
+  const { updateStatus, isUpdating } = useUpdateProposalGenerationStatus()
+
+
+
   // Initialize state with useReducer
   const initialState: State = {
     activeTab: 'generate',
@@ -229,11 +235,13 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
     onFinish: () => {
       dispatch({ type: 'SET_IS_STREAMING', payload: false })
       toast.success("Proposal generated successfully!")
+      updateStatus("success")
     },
     onError: (error) => {
       dispatch({ type: 'SET_IS_STREAMING', payload: false })
       console.error("Generation error:", error)
       toast.error(error.message || "An error occurred during generation")
+      updateStatus("failed")
     },
   })
 
@@ -244,16 +252,16 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
     }
   }, [completion, state.isStreaming])
 
-  // Smooth typing effect for streaming content
-  useEffect(() => {
-    if (state.isStreaming && textAreaRef.current) {
-      const timeout = setTimeout(() => {
-        textAreaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 100);
+  // // Smooth typing effect for streaming content
+  // useEffect(() => {
+  //   if (state.isStreaming && textAreaRef.current) {
+  //     const timeout = setTimeout(() => {
+  //       textAreaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  //     }, 100);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [completion, state.isStreaming]);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [completion, state.isStreaming]);
 
   const handlePromptSelect = (value: string) => {
     dispatch({ type: 'SET_PROMPT_ID', payload: value })
@@ -409,9 +417,9 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
         }}
       >
         <SheetTrigger asChild>
-          <Button>
-            <MessageCircleMore className="mr-1 h-4 w-4" />
-            Create Proposal
+          <Button size={"sm"} className="gap-x-2">
+            <MessageCircleMore className=" size-4" />
+            {title}
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-full sm:max-w-3xl overflow-y-auto">
@@ -529,7 +537,7 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                     <SelectContent>
                       {isFetchingPrompts ? (
                         <div className="flex items-center justify-center p-2">
-                          <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                          <Loader2 className="size-4 animate-spin mr-2" />
                           Loading prompts...
                         </div>
                       ) : prompts?.length ? (
@@ -562,9 +570,14 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                   <div className="grid gap-2">
                     <Label>Template Preview</Label>
                     <ScrollArea className="h-[150px] rounded-md border p-4">
-                      <div className="text-sm font-mono text-muted-foreground">
-                        {promptData.prompt}
-                      </div>
+                      {
+                        isFetching ? <div className="text-center">
+                          <Loader2 className="size-8 animate-spin" />
+                        </div> :
+                          <div className="text-sm font-mono text-muted-foreground">
+                            {promptData.prompt}
+                          </div>
+                      }
                     </ScrollArea>
                   </div>
                 )}
@@ -602,18 +615,20 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="py-2 relative">
-                    <Textarea
-                      ref={textAreaRef}
-                      value={completion}
-                      onChange={(e) => setCompletion(e.target.value)}
-                      className={`min-h-[400px] font-mono text-base leading-relaxed resize-none focus-visible:ring-0  transition-all duration-200 ease-in-out ${state.isStreaming ? 'relative' : ''}`}
-                      readOnly={state.isStreaming}
-                    />
-                    {state.isStreaming && (
-                      <p className="absolute bottom-4 right-4 p-2 bg-primary text-primary-foreground rounded-md font-mono text-sm animate-pulse shadow-md">
-                        Generating...
-                      </p>
-                    )}
+                    <AnimatePresence>
+                      <Textarea
+                        ref={textAreaRef}
+                        value={completion}
+                        onChange={(e) => setCompletion(e.target.value)}
+                        className={`min-h-[400px] font-mono text-base leading-relaxed resize-none focus-visible:ring-0  transition-all duration-200 ease-in-out ${state.isStreaming ? 'relative' : ''}`}
+                        readOnly={state.isStreaming}
+                      />
+                      {state.isStreaming && (
+                        <p className="absolute bottom-4 right-4 p-2 bg-primary text-primary-foreground rounded-md font-mono text-sm animate-pulse shadow-md">
+                          Generating...
+                        </p>
+                      )}
+                    </AnimatePresence>
                   </CardContent>
                   <CardFooter className="py-3 flex items-center gap-2">
                     <TooltipProvider>
@@ -678,7 +693,7 @@ export default function ProposalSheet({ job }: ProposalSheetProps) {
                         variant="default"
                         size="sm"
                         className="bg-green-600 hover:bg-green-700"
-                        onClick={() => window.open(state.selectedJob.applyUrl, '_blank')}
+                        onClick={() => window.open(state.selectedJob!.applyUrl, '_blank')}
                         disabled={!completion}
                       >
                         <CheckCircle className="size-4 mr-1" />

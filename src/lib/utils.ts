@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { FilterState } from "../types/filters"
+import { endOfMonth, startOfMonth } from "date-fns"
+import { Period } from "@/types/jobs"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -199,4 +201,15 @@ export function getFilterTags(filters: FilterState): string[] {
   })
 
   return tags
+}
+
+
+export const PeriodToDateRange = (period: Period) => {
+  const startDate = startOfMonth(new Date(period.year, period.month))
+  const endDate = endOfMonth(new Date(period.year, period.month))
+
+  return {
+    startDate,
+    endDate
+  }
 }

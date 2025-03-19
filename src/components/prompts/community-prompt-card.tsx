@@ -3,15 +3,13 @@
 import type { GetCategoryPrompts } from "@/actions/prompts/get-category-prompts-action"
 import { useLikePublicPrompt } from "@/hooks/prompts/use-like-prompt"
 import { format } from "date-fns"
-import { Expand, Heart, Star, Wand2 } from "lucide-react"
+import { Expand, Heart } from "lucide-react"
+import { useState } from "react"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Separator } from "../ui/separator"
-import { useState } from "react"
-import { toast } from "sonner"
-import { useEditPrompt } from "@/hooks/prompts/use-edit-prompt"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 
 type CommunityPromptCardProps = {
   item: Awaited<ReturnType<typeof GetCategoryPrompts>>[0]

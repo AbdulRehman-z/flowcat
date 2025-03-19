@@ -6,7 +6,6 @@ export const useGetCategoryPrompts = (categoryName: string) => {
     queryKey: [`prompts-category/${categoryName}`],
     queryFn: async () => await GetCategoryPrompts(categoryName),
     staleTime: 1000 * 60 * 60 * 24 // 24 hours
-
   })
 
   return { categoryPrompts, isFetching };

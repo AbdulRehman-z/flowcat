@@ -34,7 +34,7 @@ export default function SavedJobs() {
           <SheetTitle className="flex items-center gap-2">
             <Star className="size-5 text-amber-500" />
             Saved Jobs
-            {savedJobs.length > 0 && (
+            {savedJobs && (
               <Badge variant="secondary" className="ml-2">
                 {savedJobs.length}
               </Badge>

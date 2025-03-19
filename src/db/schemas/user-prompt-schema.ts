@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const prompts = pgTable("prompts", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
@@ -13,7 +13,7 @@ export const prompts = pgTable("prompts", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
 }, (promptsTable) => ({
-  nameUserIdx: uniqueIndex("name_userId_idx").on(promptsTable.userId, promptsTable.name,),
+  nameUserIdx: uniqueIndex("name_userId_idx").on(promptsTable.userId, promptsTable.name),
 }));
 
 

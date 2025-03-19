@@ -5,6 +5,7 @@ import * as auth from './schemas/auth-schema';
 import * as finance from './schemas/user-finance-schema';
 import * as promptsTables from './schemas/user-prompt-schema';
 import * as jobsData from './schemas/user-data-schema';
+import * as creditsHistoryData from './schemas/credits-history-schema';
 
 
 import ws from 'ws';
@@ -18,7 +19,7 @@ const schema = {
   ...finance,
   ...promptsTables,
   ...jobsData,
-
+  ...creditsHistoryData
   // ...spread other schemas here
 };
 
@@ -69,4 +70,6 @@ export const {
   twoFactorTokens,
   users_twoFactorConfirmationRelation,
   verificationTokens,
+  userPurchase,
+  creditsHistory
 } = schema;
